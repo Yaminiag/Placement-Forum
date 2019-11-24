@@ -1,0 +1,112 @@
+<div class="sidenav">
+    <div class="login-main-text">
+        <h2>Placement<br> Forum</h2>
+        <p>Login or register from here to access.</p>
+    </div>
+</div>
+
+<div class="main">
+    <div class="col-md-6 col-sm-12">
+        <div class="register-form">
+                <mat-vertical-stepper [linear]="isLinear" #stepper>
+                <mat-step [stepControl]="firstFormGroup">
+                    <form [formGroup]="firstFormGroup">
+                    <ng-template matStepLabel>Fill out your name</ng-template>
+                    <mat-form-field>
+                        <input matInput placeholder="Name" formControlName="firstCtrl" required>
+                    </mat-form-field>
+                    <div>
+                        <button mat-button matStepperNext>Next</button>
+                    </div>
+                    </form>
+                </mat-step>
+                <mat-step [stepControl]="secondFormGroup">
+                    <form [formGroup]="secondFormGroup">
+                    <ng-template matStepLabel>Fill out your email address</ng-template>
+                    <mat-form-field>
+                        <input matInput placeholder="Email Address" formControlName="secondCtrl" required>
+                    </mat-form-field>
+                    <div>
+                        <button mat-button matStepperPrevious>Back</button>
+                        <button mat-button matStepperNext>Next</button>
+                    </div>
+                    </form>
+                </mat-step>
+                <mat-step [stepControl]="thirdFormGroup">
+                    <form [formGroup]="thirdFormGroup">
+                    <ng-template matStepLabel>Fill out your password</ng-template>
+                    <mat-form-field>
+                        <input matInput placeholder="Password" formControlName="thirdCtrl" required>
+                    </mat-form-field>
+                    <div>
+                        <button mat-button matStepperPrevious>Back</button>
+                        <button mat-button matStepperNext>Next</button>
+                    </div>
+                    </form>
+                </mat-step>
+                <mat-step [stepControl]="fourthFormGroup">
+                    <form [formGroup]="fourthFormGroup">
+                    <ng-template matStepLabel>Current Status</ng-template>
+                        <mat-radio-group aria-label="Select an option" formControlName="fourthCtrl">
+                            <mat-radio-button value="0">High School</mat-radio-button><br/>
+                            <mat-radio-button value="1">First Year</mat-radio-button><br/>
+                            <mat-radio-button value="2">Second Year</mat-radio-button><br/>
+                            <mat-radio-button value="3">Third Year</mat-radio-button><br/>
+                            <mat-radio-button value="4">Fourth Year</mat-radio-button><br/>
+                            <mat-radio-button value="5">Pass-out</mat-radio-button>
+                        </mat-radio-group>
+                    <div>
+                        <button mat-button matStepperPrevious>Back</button>
+                        <button mat-button matStepperNext>Next</button>
+                    </div>
+                    </form>
+                </mat-step>
+                <mat-step [stepControl]="fifthFormGroup">
+                    <form [formGroup]="fifthFormGroup">
+                    <ng-template matStepLabel>Two month internship</ng-template>
+                    <mat-form-field>
+                        <input matInput placeholder="Two month internship" formControlName="fifthCtrl" >
+                    </mat-form-field>
+                    <div>
+                        <button mat-button matStepperPrevious>Back</button>
+                        <button mat-button matStepperNext>Next</button>
+                    </div>
+                    </form>
+                </mat-step>
+                <mat-step [stepControl]="sixthFormGroup">
+                    <form [formGroup]="sixthFormGroup">
+                    <ng-template matStepLabel>Six month internship</ng-template>
+                    <mat-form-field>
+                        <input matInput placeholder="Six month internship" formControlName="sixthCtrl" >
+                    </mat-form-field>
+                    <div>
+                        <button mat-button matStepperPrevious>Back</button>
+                        <button mat-button matStepperNext>Next</button>
+                    </div>
+                    </form>
+                </mat-step>
+                <mat-step [stepControl]="seventhFormGroup">
+                    <form [formGroup]="seventhFormGroup">
+                    <ng-template matStepLabel>Full time</ng-template>
+                    <mat-form-field>
+                        <input matInput placeholder="Full time" formControlName="seventhCtrl" >
+                    </mat-form-field>
+                    <div>
+                        <button mat-button matStepperPrevious>Back</button>
+                        <button mat-button matStepperNext>Next</button>
+                    </div>
+                    </form>
+                </mat-step>
+                <mat-step>
+                    <ng-template matStepLabel matStepperIcon="done">    
+                        <mat-icon>done_all</mat-icon>
+                    </ng-template>
+                    <div>
+                    <button mat-button (click)="submit()">Submit</button>
+                    <button mat-button (click)="stepper.reset()">Reset</button>
+                    </div>
+                </mat-step>
+                </mat-vertical-stepper>
+        </div>
+    </div>
+</div>

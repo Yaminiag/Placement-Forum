@@ -1,0 +1,65 @@
+[
+    {
+        "email" : "dunnock@gmail.com",
+        "name" : "dunnock",
+        "password" : "dunnock",
+        "year": 0,
+        "2m_internship" : "",
+        "6m_internship" : "",
+        "fulltime" : ""
+    },
+    {
+        "email" : "tamarin@gmail.com",
+        "name" : "tamarin",
+        "password" : "tamarin",
+        "year": 5,
+        "2m_internship" : "GS",
+        "6m_internship" : "GS",
+        "fulltime" : "GS"
+    },
+    {
+        "email" : "heron@gmail.com",
+        "name" : "heron",
+        "password" : "heron",
+        "year": 4,
+        "2m_internship" : "MS",
+        "6m_internship" : "",
+        "fulltime" : "MS"
+    },
+    {
+        "email" : "avocet@gmail.com",
+        "name" : "avocet",
+        "password" : "avocet",
+        "year": 4,
+        "2m_internship" : "Intuit",
+        "6m_internship" : "Intuit",
+        "fulltime" : "Intuit"
+    },
+    {
+        "email" : "wombat@gmail.com",
+        "name" : "wombat",
+        "password" : "wombat",
+        "year": 3,
+        "2m_internship" : "GS",
+        "6m_internship" : "",
+        "fulltime" : ""
+    },
+    {
+        "email" : "dogfish@gmail.com",
+        "name" : "dogfish",
+        "password" : "dogfish",
+        "year": 2,
+        "2m_internship" : "",
+        "6m_internship" : "",
+        "fulltime" : ""
+    },
+    {
+        "email" : "sparrow@gmail.com",
+        "name" : "sparrow",
+        "password" : "sparrow",
+        "year": 1,
+        "2m_internship" : "",
+        "6m_internship" : "",
+        "fulltime" : ""
+    }
+]
