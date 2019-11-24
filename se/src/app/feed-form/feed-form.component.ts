@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { window } from 'rxjs/operators';
 import { from } from 'rxjs';
@@ -13,6 +13,8 @@ import { FeedService } from '../feed.service';
   styleUrls: ['./feed-form.component.css']
 })
 export class FeedFormComponent implements OnInit {
+
+  @Output() questionAdded = new EventEmitter<any>();
 
   constructor(@Inject(SESSION_STORAGE) private storage: WebStorageService,private Feed :FeedService,private router: Router) { }
   response : any;
@@ -30,9 +32,9 @@ export class FeedFormComponent implements OnInit {
       this.response = JSON.parse(JSON.stringify(data));
       console.log(this.response);
       if(this.response.status==201){
-        this.ngOnInit();
         target.querySelector('#question').value = "";
         this.clicked = false;
+        this.questionAdded.emit();
       }
     })
   }

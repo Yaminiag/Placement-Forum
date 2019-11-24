@@ -8,6 +8,18 @@ div.card {
     margin-top: 20px;
 }
 
+div.card-header {
+    margin: 0px;
+}
+
 form {
     margin-top: 20px;
+}
+
+button.btn-outline-danger {
+    margin-left: -20px;
+}
+
+#upvote{
+    cursor: pointer;
 }

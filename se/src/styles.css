@@ -8,7 +8,11 @@
 .darkteal{
     background-color: #2B7A78 !important;
 }
-html, body { height: 100%; }
+html, body { 
+    height: 100%; 
+    margin: 0px;
+    max-width: 100%;
+}
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .btn-outline-teal {

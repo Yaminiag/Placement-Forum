@@ -1,32 +1,28 @@
 <body>
-    <ul class="nav teal justify-content-center">
-        <li class="nav-item">
-          <a class="nav-link" href="#">Main Dashboard</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Search Question</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Logout</a>
-        </li>
-      </ul>
+    <nav class="navbar teal">
+      <form class="form-inline">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn my-2 my-sm-0" type="submit">Search</button>
+      </form>
+      <a class="navbar-brand" href="#">Logout</a>
+    </nav>
       <div class="row">
         <div class="col-2">
             <div class="card">
                 <div class="card-header btn-outline-teal">
-                    <h5 class="card-title">User Name</h5>
+                    <h5 class="card-title">{{user.name}}</h5>
                 </div>
                 <div class="card-body">
-                    <h6 class="text-muted">Email</h6>
-                    <h6 class="text-muted">Year</h6>
-                    <h6 class="text-muted">2 Month Internship: </h6>
-                    <h6 class="text-muted">6 Month Internship: </h6>
-                    <h6 class="text-muted">Full Time Employment: </h6>
+                    <h6 class="text-muted">{{user.email}}</h6>
+                    <h6 class="text-muted">{{user.year}}</h6>
+                    <h6 *ngIf="user.two_month_internship" class="text-muted">2 Month Internship: {{user.two_month_internship}}</h6>
+                    <h6 *ngIf="user.six_month_internship" class="text-muted">6 Month Internship: {{user.six_month_internship}}</h6>
+                    <h6 *ngIf="user.fulltime" class="text-muted">Full Time Employment: {{user.fulltime}}</h6>
                 </div>
             </div>
         </div>
         <div class="col-7">
-            <app-feed-form></app-feed-form>
+            <app-feed-form (questionAdded)="questionAdded()" ></app-feed-form>
             <app-feed></app-feed>
         </div>
     </div>

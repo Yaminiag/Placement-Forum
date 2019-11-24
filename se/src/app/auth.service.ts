@@ -23,8 +23,8 @@ export class AuthService {
       "name":name,
       "password":password,
       "year":year,
-      "2m_internship":twoMonth,
-      "6m_internship":sixMonth,
+      "two_month_internship":twoMonth,
+      "six_month_internship":sixMonth,
       "fulltime":fulltime
     },{observe : 'response'})
   }

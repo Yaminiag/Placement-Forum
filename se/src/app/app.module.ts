@@ -9,6 +9,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import {MatRadioModule} from '@angular/material/radio';
 import { StorageServiceModule} from 'angular-webstorage-service';
+import { FeedService } from './feed.service';
 
 
 @NgModule({
@@ -31,7 +32,7 @@ import { StorageServiceModule} from 'angular-webstorage-service';
     HttpClientModule,
     StorageServiceModule
   ],
-  providers: [],
+  providers: [FeedService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
