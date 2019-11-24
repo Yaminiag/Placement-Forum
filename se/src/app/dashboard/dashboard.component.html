@@ -1,14 +1,31 @@
-<!-- <p>dashboard works!</p> -->
 <body>
-    <div class="row">
-        <div class="col-3 teal">
-            <nav class="nav flex-column">
-                <a class="nav-link active" href="#">Dashboard</a>
-                <a class="nav-link" href="#">Search</a>
-                <a class="nav-link" href="#">Log Out</a>
-            </nav>
+    <ul class="nav teal justify-content-center">
+        <li class="nav-item">
+          <a class="nav-link" href="#">Main Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Search Question</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Logout</a>
+        </li>
+      </ul>
+      <div class="row">
+        <div class="col-2">
+            <div class="card">
+                <div class="card-header btn-outline-teal">
+                    <h5 class="card-title">User Name</h5>
+                </div>
+                <div class="card-body">
+                    <h6 class="text-muted">Email</h6>
+                    <h6 class="text-muted">Year</h6>
+                    <h6 class="text-muted">2 Month Internship: </h6>
+                    <h6 class="text-muted">6 Month Internship: </h6>
+                    <h6 class="text-muted">Full Time Employment: </h6>
+                </div>
+            </div>
         </div>
-        <div class="col-9">
+        <div class="col-7">
             <app-feed-form></app-feed-form>
             <app-feed></app-feed>
         </div>

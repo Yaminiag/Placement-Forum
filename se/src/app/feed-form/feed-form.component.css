@@ -1,0 +1,9 @@
+div.row {
+    margin: 10px;
+    margin-top: 0px;
+    max-width: 100%;
+}
+
+div.card {
+    padding: 0;
+}

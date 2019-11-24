@@ -1,1 +1,26 @@
-<p>feed-form works!</p>
+<div class="row">
+    <div class="card col-12">
+        <form (submit)="addquestion($event)">
+        <div class="card-body">
+            <div class="form-group">
+                <textarea class="form-control" id="question" rows="3" placeholder="Enter your question.." required></textarea>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="exampleRadios" id="3rd year Summer Internship" value="3rd year Summer Internship" [(ngModel)]='clicked' required>
+                <label class="form-check-label" for="3rd year Summer Internship">
+                    3rd Year Summer Internships
+                </label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="exampleRadios" id="4th year placements" value="4th year placements" [(ngModel)]='clicked' required>
+                <label class="form-check-label" for="4th year placements">
+                    4th Year Placements
+                </label>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-outline-teal">Add Question</button>
+        </div>
+        </form>
+    </div>
+</div>
