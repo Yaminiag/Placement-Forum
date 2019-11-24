@@ -4,8 +4,8 @@
         "name" : "dunnock",
         "password" : "dunnock",
         "year": 0,
-        "2m_internship" : "",
-        "6m_internship" : "",
+        "two_month_internship" : "",
+        "six_month_internship" : "",
         "fulltime" : ""
     },
     {
@@ -13,8 +13,8 @@
         "name" : "tamarin",
         "password" : "tamarin",
         "year": 5,
-        "2m_internship" : "GS",
-        "6m_internship" : "GS",
+        "two_month_internship" : "GS",
+        "six_month_internship" : "GS",
         "fulltime" : "GS"
     },
     {
@@ -22,8 +22,8 @@
         "name" : "heron",
         "password" : "heron",
         "year": 4,
-        "2m_internship" : "MS",
-        "6m_internship" : "",
+        "two_month_internship" : "MS",
+        "six_month_internship" : "",
         "fulltime" : "MS"
     },
     {
@@ -31,8 +31,8 @@
         "name" : "avocet",
         "password" : "avocet",
         "year": 4,
-        "2m_internship" : "Intuit",
-        "6m_internship" : "Intuit",
+        "two_month_internship" : "Intuit",
+        "six_month_internship" : "Intuit",
         "fulltime" : "Intuit"
     },
     {
@@ -40,8 +40,8 @@
         "name" : "wombat",
         "password" : "wombat",
         "year": 3,
-        "2m_internship" : "GS",
-        "6m_internship" : "",
+        "two_month_internship" : "GS",
+        "six_month_internship" : "",
         "fulltime" : ""
     },
     {
@@ -49,8 +49,8 @@
         "name" : "dogfish",
         "password" : "dogfish",
         "year": 2,
-        "2m_internship" : "",
-        "6m_internship" : "",
+        "two_month_internship" : "",
+        "six_month_internship" : "",
         "fulltime" : ""
     },
     {
@@ -58,8 +58,8 @@
         "name" : "sparrow",
         "password" : "sparrow",
         "year": 1,
-        "2m_internship" : "",
-        "6m_internship" : "",
+        "two_month_internship" : "",
+        "six_month_internship" : "",
         "fulltime" : ""
     }
 ]

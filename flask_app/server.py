@@ -5,6 +5,19 @@ from bson import json_util
 from bson import ObjectId
 from flask_cors import CORS, cross_origin      
 from datetime import datetime
+from flask import Flask, flash, request, redirect, url_for
+from flask import send_from_directory, jsonify
+from werkzeug.utils import secure_filename
+import itertools
+import pymongo
+import spacy 
+from spacy import displacy
+from collections import Counter 
+import en_core_web_sm
+nlp=en_core_web_sm.load()
+import pandas as pd 
+file=pd.read_csv('placement.csv')
+df=pd.DataFrame(file)
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'super secret'
@@ -19,6 +32,70 @@ def convertCursor(info):
     for x in info:
         data.append(x)
     return data	
+
+def ner():
+    tags = list()
+    table = mongo_db['question']
+    data = table.find({},{'_id':False})
+    data = convertCursor(data)
+    for i in range(0, len(data)):
+        ## uncomment if using python 2.x
+        #x = unicode(data[i]['question'], "utf-8")
+        doc = nlp(data[i]['question'])
+        l = list()
+        for ent in doc.ents:
+            if(str(ent.label_)==str('CARDINAL') or str(ent.label_)==str('ORDINAL')):
+                pass                
+            else:
+                l.append((ent.text, ent.label_))
+        tags.append(l)
+    x = list()
+    for i in range(0, len(data)):
+        y = {}
+        y['question'] = df['question'][i]
+        y['answer'] = df['answer'][i]
+        z = list()
+        for j in range(0, len(tags[i])):
+            #print(type(tags[i][j]))
+            z.append(list(tags[i][j]))
+        y['tags'] = z
+        x.append(y)
+    # print(x)
+    mycol = mongo_db["question"]
+    x = mycol.insert_many(x)
+    # print("printing flatten")
+    flatten = list(itertools.chain.from_iterable(tags))
+    # print(flatten)
+    # print("flatten done")
+    # cursor = mycol.find({})
+    # res = list()
+    # for i in cursor:
+    #     res.append(i)
+    return list(set(flatten))
+
+def fetch(args):
+    print("args inside", args, len(args), type(args))
+    data1 = list()
+    data1.append(args) 
+    print(data1)
+    mycol = mongo_db["question"]
+    # cursor = mycol.find({"tags":{"$elemMatch":{"$elemMatch":{"$in":[args]}}} })
+    cursor = mycol.find({'tags':{"$elemMatch":{"$elemMatch":{"$in":data1}}}})
+
+    # print(cursor)
+    
+    # cursor = mycol.find({"$text": {"$search": args}})
+
+    data = list()
+    for i in cursor:
+        print("hello")
+        x = dict()
+        x['question'] = i['question']
+        x['answer'] = i['answer']
+        data.append(x)
+        print(x)
+    print(len(data))
+    return list(data)
 
 @app.route('/login',methods=['GET','POST'])
 def login():
@@ -76,7 +153,7 @@ def user():
         user = {'email': data}
         print(user)
         table = mongo_db['user']
-        val = table.find(user)
+        val = table.find(user,{'_id':False})
         val = convertCursor(val)
         if(len(val)==1):
             return jsonify(val),200
@@ -126,10 +203,10 @@ def validated():
         val = table.find(user)
         val = convertCursor(val)
         year = val[0]['year']
-        if year in [3, 4, 5]:
-            return jsonify({'validated': 'true'}),200
+        if year in ['3', '4', '5']:
+            return jsonify({'validated': True}),200
         else:
-            return jsonify({'validated': 'false'}),200
+            return jsonify({'validated': False}),200
     else:
         return jsonify({}),405
 
@@ -190,11 +267,13 @@ def answer():
                 updated_answers.append(ea)
         if not found:
             # answer not found
+            print('not found')
             return jsonify({}),400
 
         # updating the question by deleting answer
         newvalues = {'$set': {'answer': updated_answers}}
         val = table.update_one(question, newvalues)
+        print(val)
         if val:
             resp = {}
             return jsonify(resp),200
@@ -266,6 +345,31 @@ def feed():
         return jsonify(val),200
     else:
         return jsonify({}),405
+
+@app.route('/ner', methods=['GET', 'POST'])
+def callner():
+        if request.method=="GET":
+                a=ner()
+                return jsonify(a)
+
+@app.route('/get_tags', methods=['GET', 'POST'])
+def callfetch():
+        if request.method=="GET":
+                args=request.args.get('key')
+                print("args hello", args)
+                res = fetch(args)
+                print(res)
+                return jsonify(res)
+
+
+@app.route('/choice',methods=['GET','POST'])
+def choice():
+        if request.method=="POST":
+                data=request.form.get('text')
+                print("data",data)
+                return jsonify(data)
+
+
 
 if __name__ == "__main__":
     app.debug = True

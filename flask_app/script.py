@@ -20,6 +20,8 @@ import en_core_web_sm
 import json 
 nlp=en_core_web_sm.load()
 import pandas as pd 
+file=pd.read_csv('placement.csv',skiprows=[0],usecols=[2,3])
+df=pd.DataFrame(file)
 file=pd.read_csv('placement.csv')
 df=pd.DataFrame(file)
 
@@ -50,14 +52,14 @@ def ner():
         y['answer'] = df['answer'][i]
         z = list()
         for j in range(0, len(tags[i])):
-            print(type(tags[i][j]))
+            #print(type(tags[i][j]))
             z.append(list(tags[i][j]))
         y['tags'] = z
         x.append(y)
     # print(x)
     myclient = pymongo.MongoClient("mongodb://localhost:27017/")
-    mydb = myclient["mydatabase2"]
-    mycol = mydb["customers"]
+    mydb = myclient["SE"]
+    mycol = mydb["question"]
     mydb.customers.drop()
     x = mycol.insert_many(x)
     # print("printing flatten")
@@ -71,13 +73,23 @@ def ner():
     return list(set(flatten))
 
 def fetch(args):
+    print("args inside", args, len(args), type(args))
+    data1 = list()
+    data1.append(args) 
+    print(data1)
     myclient = pymongo.MongoClient("mongodb://localhost:27017/")
-    mydb = myclient["mydatabase2"]
-    mycol = mydb["customers"]
-    cursor = mycol.find({"tags":{"$elemMatch":{"$elemMatch":{"$in":[args]}}} })
+    mydb = myclient["SE"]
+    mycol = mydb["question"]
+    # cursor = mycol.find({"tags":{"$elemMatch":{"$elemMatch":{"$in":[args]}}} })
+    cursor = mycol.find({'tags':{"$elemMatch":{"$elemMatch":{"$in":data1}}}})
+
     # print(cursor)
+    
+    # cursor = mycol.find({"$text": {"$search": args}})
+
     data = list()
     for i in cursor:
+        print("hello")
         x = dict()
         x['question'] = i['question']
         x['answer'] = i['answer']
