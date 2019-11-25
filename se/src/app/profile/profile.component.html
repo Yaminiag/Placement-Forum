@@ -1,7 +1,16 @@
 <body>
-    <div class="card mb-3" style="max-width: 540px;">
+    <nav class="navbar d-flex justify-content-start teal">
+        <a class="navbar-brand" href="#">
+            <img src="assets/logo.png" width="30" height="30" alt="">
+        </a>
+    <a class="navbar-brand" style="color:white;margin-left: 900px;"routerLink='/profile'> Profile</a>
+        <a class="navbar-brand" style="color:white;margin-left: 10px;" routerLink='/analytics'> Analytics</a>
+        <a class="navbar-brand" style="color:white;margin-left: 10px;" href="#">Logout</a>
+    </nav>
+    <div class="row">
+    <div class="col-7 offset-3 card mb-3" >
         <div class="row no-gutters">
-            <div class="col-md-4">
+            <div class="col-3">
                 <div class="card-header btn-outline-teal">
                     <img [src]= "user.profile_photo" class="card-img-top" style="max-height: 150px;" alt="">
                 </div>
@@ -12,7 +21,7 @@
                     <h6 class="text-muted">Password: {{user.password}}</h6>
                 </div>
             </div>
-            <div class="col-md-8">
+            <div class="col-8 offset-1">
             <div class="card-body">
                 <ul class="list-group list-group-flush">
                     <div *ngIf="twom_exists()">
@@ -33,19 +42,13 @@
                             <star-rating [value]="r_ft" checkedcolor="yellow" uncheckedcolor="gray" size="24px" readonly="false" (rate)="onRate_fulltime($event)"></star-rating>
                         </li>
                     </div>
+                    <li class="list-group-item">Numbers of questions asked: {{qcount}}</li>
+                      <li class="list-group-item">Number of answers: {{acount}}</li>
+                      <li class="list-group-item">Number of upvotes: {{upcount}}</li>
                 </ul>
             </div>
             </div>
-            <div class="col-md-8">
-              <div class="card-body">
-                  <h4 class="card-title">Life Stats</h4>
-                  <ul class="list-group list-group-flush">
-                      <li class="list-group-item">Numbers of questions asked: {{qcount}}</li>
-                      <li class="list-group-item">Number of answers: {{acount}}</li>
-                      <li class="list-group-item">Number of upvotes: {{upcount}}</li>
-                  </ul>
-              </div>
-              </div>
         </div>
+    </div>
     </div>
 </body>

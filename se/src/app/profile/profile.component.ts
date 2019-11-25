@@ -36,6 +36,7 @@ export class ProfileComponent implements OnInit {
       this.qcount = data[0];
       this.acount = data[1];
       this.upcount = data[2];
+      console.log(data);
     })
 
     this.Feed.getRating(email, "2m")

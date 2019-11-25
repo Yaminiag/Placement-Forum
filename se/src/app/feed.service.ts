@@ -66,7 +66,7 @@ export class FeedService {
   }
 
   getStats(email){
-    return this.http.get(this._url_rating, {
+    return this.http.get(this._url_getstats, {
       params: new HttpParams().set('email', email)
     })
   }

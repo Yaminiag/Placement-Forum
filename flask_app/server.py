@@ -39,7 +39,20 @@ def sortUpvotes(answer):
     else:
         return 0
 
-def ner():
+def ner(data):
+    doc = nlp(data['question'])
+    l = list()
+    for ent in doc.ents:
+        if(str(ent.label_)==str('CARDINAL') or str(ent.label_)==str('ORDINAL')):
+            pass                
+        else:
+            l.append((ent.text, ent.label_))
+    # tags.append(l)
+    data['tags'] = l
+    return data
+
+
+def ner_many():
     tags = list()
     table = mongo_db['question']
     data = table.find({},{'_id':False})
@@ -54,21 +67,25 @@ def ner():
                 pass                
             else:
                 l.append((ent.text, ent.label_))
-        tags.append(l)
-    x = list()
-    for i in range(0, len(data)):
-        y = {}
-        y['question'] = df['question'][i]
-        y['answer'] = df['answer'][i]
-        z = list()
-        for j in range(0, len(tags[i])):
-            z.append(list(tags[i][j]))
-        y['tags'] = z
-        x.append(y)
+        # tags.append(l)
+        data[i]['tags'] = l
+    
+    # x = list()
+    # for i in range(0, len(data)):
+    #     y = {}
+    #     y['question'] = df['question'][i]
+    #     y['answer'] = df['answer'][i]
+    #     z = list()
+    #     for j in range(0, len(tags[i])):
+    #         z.append(list(tags[i][j]))
+    #     y['tags'] = z
+    #     x.append(y)
     mycol = mongo_db["question"]
-    x = mycol.insert_many(x)
-    flatten = list(itertools.chain.from_iterable(tags))
-    return list(set(flatten))
+    mycol.drop()
+    x = mycol.insert_many(data)
+    # flatten = list(itertools.chain.from_iterable(tags))
+    # return list(set(flatten))
+    return 
 
 def fetch(args):
     print("args inside", args, len(args), type(args))
@@ -76,16 +93,17 @@ def fetch(args):
     data1.append(args) 
     print(data1)
     mycol = mongo_db["question"]
-    cursor = mycol.find({'tags':{"$elemMatch":{"$elemMatch":{"$in":data1}}}})
-    data = list()
-    for i in cursor:
-        print("hello")
-        x = dict()
-        x['question'] = i['question']
-        x['answer'] = i['answer']
-        data.append(x)
-        print(x)
-    print(len(data))
+    cursor = mycol.find({'tags':{"$elemMatch":{"$elemMatch":{"$in":data1}}}},{'_id':False})
+    data = convertCursor(cursor)
+    # data = list()
+    # for i in cursor:
+    #     print("hello")
+    #     x = dict()
+    #     x['question'] = i['question']
+    #     x['answer'] = i['answer']
+    #     data.append(x)
+    #     print(x)
+    # print(len(data))
     return list(data)
 
 @app.route('/login',methods=['GET','POST'])
@@ -119,14 +137,13 @@ def register():
         cursor = table.find({'email':email})
         res = convertCursor(cursor)
         if(len(res)==0):
-            data['profile_photo'] = ''
             val = table.insert(data)
             if(val):
                 resp = {'message' : 'user registered successfully'}
                 resp = jsonify(resp)
                 return resp,200
             else:
-                resp = {'message' : 'user registration failed'}
+                resp = {'message' : 'user registeration failed'}
                 return jsonify(resp),400
         else:
             resp = {'message' : 'user exists'}
@@ -146,12 +163,9 @@ def user():
         val = table.find(user,{'_id':False})
         val = convertCursor(val)
         if(len(val)==1):
-            if 'profile_photo' not in val[0]:
-                val[0]['profile_photo']=''
             return jsonify(val),200
         return jsonify({}),400
-    else:
-        return jsonify({}),405
+    return jsonify({}),405
 
 @app.route('/api/v1/question',methods=['GET','POST','DELETE'])
 def question():
@@ -164,6 +178,7 @@ def question():
         data = request.get_json()
         data['timestamp'] = dt_string
         data['answer'] = []
+        data = ner(data)
         val = table.insert(data)
         if val:
             resp = {}
@@ -198,7 +213,6 @@ def validated():
         val = table.find(user)
         val = convertCursor(val)
         year = val[0]['year']
-        year = str(year)
         if year in ['3', '4', '5']:
             return jsonify({'validated': True}),200
         else:
@@ -234,6 +248,7 @@ def answer():
         existing_answers.append(details_to_add)
         newvalues = {'$set': {'answer': existing_answers, 'timestamp': dt_string}}
         val = table.update_one(question, newvalues)
+
         if val:
             resp = {}
             return jsonify(resp),201
@@ -353,10 +368,26 @@ def callner():
                 return jsonify(a)
 
 @app.route('/get_tags', methods=['GET', 'POST'])
+def get_tags():
+    if request.method=="GET":
+        table = mongo_db['question']
+        data = table.find({},{'_id':False})
+        data = convertCursor(data)
+        tags = []
+        for i in range(len(data)):
+            # print(data[i])
+            for j in data[i]['tags']:
+                # print(j)
+                tags.append(j[0])
+        # print(tags)
+        return jsonify(list(set(tags))),200
+    return jsonify({}),405
+
+@app.route('/fetch', methods=['GET', 'POST'])
 def callfetch():
         if request.method=="GET":
                 args=request.args.get('key')
-                print("args hello", args)
+                # print("args hello", args)
                 res = fetch(args)
                 print(res)
                 return jsonify(res)
@@ -368,6 +399,23 @@ def choice():
                 data=request.form.get('text')
                 print("data",data)
                 return jsonify(data)
+
+@app.route('/get_orgs', methods=['GET', 'POST'])
+def get_orgs():
+    if request.method=="GET":
+        table = mongo_db['question']
+        data = table.find({},{'_id':False})
+        data = convertCursor(data)
+        tags = []
+        for i in range(len(data)):
+            # print(data[i])
+            for j in data[i]['tags']:
+                # print(j)
+                if j[1]=='ORG':
+                    tags.append(j[0])
+        print(tags)
+        return jsonify(list(set(tags))),200
+    return jsonify({}),405
 
 def countQuestions(email, table):
     searchFor = {'ques_email': email}
@@ -471,7 +519,7 @@ def rating():
         return jsonify({}), 405 
 
 
-
 if __name__ == "__main__":
     app.debug = True
+    ner_many()
     app.run()

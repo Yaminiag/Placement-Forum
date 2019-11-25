@@ -3,18 +3,6 @@
         <a class="navbar-brand" href="#">
             <img src="assets/logo.png" width="30" height="30" alt="">
         </a>
-      <!-- <form class="form-inline">
-        <mat-form-field class="form-field">
-            <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" id="key"
-            matInput [formControl]="tagControl" [matAutocomplete]="auto">
-        </mat-form-field>
-
-        <mat-autocomplete #auto="matAutoComplete">
-            <mat-option *ngFor="let tag of tags" [value]="tag">
-                {{tag}}
-            </mat-option>
-        </mat-autocomplete>
-      </form> -->
     <form class="example-form">
         <mat-form-field class="example-full-width">
             <input id="search" #searches type="text" placeholder="Search" aria-label="Number" matInput [formControl]="tagControl" [matAutocomplete]="auto">
@@ -30,8 +18,9 @@
             &times;
         </span>
     </button>
-     <a class="navbar-brand" routerLink='/analytics'> Analytics</a>
-      <a class="navbar-brand" href="#">Logout</a>
+    <a class="navbar-brand" style="color:white;margin-left: 700px;"routerLink='/profile'> Profile</a>
+     <a class="navbar-brand" style="color:white;margin-left: 10px;" routerLink='/analytics'> Analytics</a>
+      <a class="navbar-brand" style="color:white;margin-left: 10px;" href="#">Logout</a>
     </nav>
       <div class="row">
         <div class="col-2">
@@ -45,6 +34,9 @@
                     <h6 *ngIf="user.two_month_internship" class="text-muted">2 Month Internship: {{user.two_month_internship}}</h6>
                     <h6 *ngIf="user.six_month_internship" class="text-muted">6 Month Internship: {{user.six_month_internship}}</h6>
                     <h6 *ngIf="user.fulltime" class="text-muted">Full Time Employment: {{user.fulltime}}</h6>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-outline-teal" routerLink='/profile'>Profile</button>
                 </div>
             </div>
         </div>
