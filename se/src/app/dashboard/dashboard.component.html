@@ -1,9 +1,36 @@
 <body>
-    <nav class="navbar teal">
-      <form class="form-inline">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn my-2 my-sm-0" type="submit">Search</button>
-      </form>
+    <nav class="navbar d-flex justify-content-start teal">
+        <a class="navbar-brand" href="#">
+            <img src="assets/logo.png" width="30" height="30" alt="">
+        </a>
+      <!-- <form class="form-inline">
+        <mat-form-field class="form-field">
+            <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" id="key"
+            matInput [formControl]="tagControl" [matAutocomplete]="auto">
+        </mat-form-field>
+
+        <mat-autocomplete #auto="matAutoComplete">
+            <mat-option *ngFor="let tag of tags" [value]="tag">
+                {{tag}}
+            </mat-option>
+        </mat-autocomplete>
+      </form> -->
+    <form class="example-form">
+        <mat-form-field class="example-full-width">
+            <input id="search" #searches type="text" placeholder="Search" aria-label="Number" matInput [formControl]="tagControl" [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let tag of filteredOptions | async" [value]="tag" (click)="search(tag)">
+                {{tag}}
+            </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+    </form>
+    <button class="close" aria-label="Close" (click)="refreshFeed()"> 
+        <span aria-hidden="true">
+            &times;
+        </span>
+    </button>
+     <a class="navbar-brand" routerLink='/analytics'> Analytics</a>
       <a class="navbar-brand" href="#">Logout</a>
     </nav>
       <div class="row">
@@ -23,7 +50,7 @@
         </div>
         <div class="col-7">
             <app-feed-form (questionAdded)="questionAdded()" ></app-feed-form>
-            <app-feed></app-feed>
+            <app-feed [searched]="searched" [searchArray]="opArray"></app-feed>
         </div>
     </div>
 </body>

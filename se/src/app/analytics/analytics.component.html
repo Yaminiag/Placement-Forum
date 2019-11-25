@@ -1,0 +1,12 @@
+<div>
+    <form class="example-form">
+        <mat-form-field class="example-full-width">
+            <input id="search" #searches type="text" placeholder="Search" aria-label="Number" matInput [formControl]="tagControl" [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let tag of filteredOptions | async" [value]="tag">
+                {{tag}}
+            </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+    </form>
+</div>

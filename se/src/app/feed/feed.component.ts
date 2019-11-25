@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, Input } from '@angular/core';
 import { FeedService } from '../feed.service';
 import { Router } from '@angular/router';
 import { IFeed ,IAnswer } from '../feed';
@@ -16,6 +16,10 @@ export class FeedComponent implements OnInit {
   public response;
   constructor(@Inject(SESSION_STORAGE) private storage: WebStorageService,private Feed :FeedService,private router: Router) { }
 
+  @Input() searched:any;
+  @Input() searchArray:[];
+
+  
   ngOnInit() {
       this.user_email = this.storage.get('email');
       this.Feed.validate(this.user_email).subscribe(data =>{
@@ -23,6 +27,7 @@ export class FeedComponent implements OnInit {
         console.log(this.valid)
       })
       this.Feed.getFeed().subscribe(data=>{
+
           this.feedArr = data;
           console.log(data);
       })
@@ -32,6 +37,17 @@ export class FeedComponent implements OnInit {
       console.log(data);
       this.ngOnInit();
     })
+  }
+
+  ngOnChanges(){
+    console.log(this.searched)
+    if(this.searched){
+      this.feedArr = this.searchArray;
+      console.log(this.feedArr)
+    }
+    else{
+      this.ngOnInit();
+    }
   }
 
   upvote(question,answer){

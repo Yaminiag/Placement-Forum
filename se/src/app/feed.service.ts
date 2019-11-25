@@ -62,4 +62,12 @@ export class FeedService {
     'email' : email
     },{observe:'response'})
   }
+
+  getTag(){
+    return this.http.get("http://localhost:5000/get_tags")
+  }
+
+  getOrg(){
+    return this.http.get("http://localhost:5000/get_orgs")
+  }
 }
