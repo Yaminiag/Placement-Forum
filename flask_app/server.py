@@ -62,21 +62,12 @@ def ner():
         y['answer'] = df['answer'][i]
         z = list()
         for j in range(0, len(tags[i])):
-            #print(type(tags[i][j]))
             z.append(list(tags[i][j]))
         y['tags'] = z
         x.append(y)
-    # print(x)
     mycol = mongo_db["question"]
     x = mycol.insert_many(x)
-    # print("printing flatten")
     flatten = list(itertools.chain.from_iterable(tags))
-    # print(flatten)
-    # print("flatten done")
-    # cursor = mycol.find({})
-    # res = list()
-    # for i in cursor:
-    #     res.append(i)
     return list(set(flatten))
 
 def fetch(args):
@@ -85,13 +76,7 @@ def fetch(args):
     data1.append(args) 
     print(data1)
     mycol = mongo_db["question"]
-    # cursor = mycol.find({"tags":{"$elemMatch":{"$elemMatch":{"$in":[args]}}} })
     cursor = mycol.find({'tags':{"$elemMatch":{"$elemMatch":{"$in":data1}}}})
-
-    # print(cursor)
-    
-    # cursor = mycol.find({"$text": {"$search": args}})
-
     data = list()
     for i in cursor:
         print("hello")
@@ -129,8 +114,6 @@ def login():
 def register():
     if request.method == 'POST':
         data = request.get_json()
-        # uname = data['username']
-        # pwd = data['password']
         email = data['email']
         table = mongo_db['user']
         cursor = table.find({'email':email})
