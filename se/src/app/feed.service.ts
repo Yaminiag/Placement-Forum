@@ -85,6 +85,13 @@ export class FeedService {
   {
     return this.http.get(this._url_rating, {
       params: new HttpParams().set('email', email).set('type', type)
-    }) 
+    })
+  }
+  getTag(){
+    return this.http.get("http://localhost:5000/get_tags")
+  }
+
+  getOrg(){
+    return this.http.get("http://localhost:5000/get_orgs")
   }
 }
