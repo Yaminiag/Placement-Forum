@@ -1,29 +1,51 @@
 <body>
-    <ul class="nav teal justify-content-center">
-        <li class="nav-item">
-          <a class="nav-link" href="#">Main Dashboard</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Search Question</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Logout</a>
-        </li>
-      </ul>
-      <div class="row">
-        <div class="col-2">
-            <div class="card">
+    <div class="card mb-3" style="max-width: 540px;">
+        <div class="row no-gutters">
+            <div class="col-md-4">
                 <div class="card-header btn-outline-teal">
-                    <h5 class="card-title">User Name</h5>
+                    <img [src]= "user.profile_photo" class="card-img-top" style="max-height: 150px;" alt="">
                 </div>
                 <div class="card-body">
-                    <h6 class="text-muted">Email</h6>
-                    <h6 class="text-muted">Year</h6>
-                    <h6 class="text-muted">2 Month Internship: </h6>
-                    <h6 class="text-muted">6 Month Internship: </h6>
-                    <h6 class="text-muted">Full Time Employment: </h6>
+                    <h5 class="card-title">{{user.name}}</h5>
+                    <h6 class="text-muted">Email: {{user.email}}</h6>
+                    <h6 class="text-muted">Student Status: {{user.year}}</h6>
+                    <h6 class="text-muted">Password: {{user.password}}</h6>
                 </div>
             </div>
+            <div class="col-md-8">
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <div *ngIf="twom_exists()">
+                        <li class="list-group-item">
+                            <h5> Two Month Internship : {{user.two_month_internship}}</h5>
+                            <star-rating [value]="r_2m" checkedcolor="yellow" uncheckedcolor="gray" size="24px" readonly="false" (rate)="onRate_2m($event)"></star-rating>
+                        </li>
+                    </div>
+                    <div *ngIf="sixm_exists()">
+                        <li class="list-group-item">
+                            <h5> Six Month Internship : {{user.six_month_internship}}</h5>
+                            <star-rating [value]="r_6m" checkedcolor="yellow" uncheckedcolor="gray" size="24px" readonly="false" (rate)="onRate_6m($event)"></star-rating>
+                        </li>
+                    </div>
+                    <div *ngIf="ft_exists()">
+                        <li class="list-group-item">
+                            <h5> Full Time Employment : {{user.fulltime}}</h5>
+                            <star-rating [value]="r_ft" checkedcolor="yellow" uncheckedcolor="gray" size="24px" readonly="false" (rate)="onRate_fulltime($event)"></star-rating>
+                        </li>
+                    </div>
+                </ul>
+            </div>
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                  <h4 class="card-title">Life Stats</h4>
+                  <ul class="list-group list-group-flush">
+                      <li class="list-group-item">Numbers of questions asked: {{qcount}}</li>
+                      <li class="list-group-item">Number of answers: {{acount}}</li>
+                      <li class="list-group-item">Number of upvotes: {{upcount}}</li>
+                  </ul>
+              </div>
+              </div>
         </div>
     </div>
 </body>

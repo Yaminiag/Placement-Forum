@@ -12,6 +12,8 @@ export class FeedService {
   private _url_user: string = "http://localhost:5000/api/v1/user"
   private _url_feed: string = "http://localhost:5000/api/v1/feed"
   private _url_ans: string = "http://localhost:5000/api/v1/answer"
+  private _url_getstats: string = "http://localhost:5000/api/v1/personal_stats"
+  private _url_rating: string = "http://localhost:5000/api/v1/rating"
 
   constructor(private http : HttpClient) { }
 
@@ -63,6 +65,28 @@ export class FeedService {
     },{observe:'response'})
   }
 
+  getStats(email){
+    return this.http.get(this._url_rating, {
+      params: new HttpParams().set('email', email)
+    })
+  }
+
+  updateRating(email, newvalue, company, type)
+  {
+    return this.http.post(this._url_rating,{
+      'email' : email,
+      'rating': newvalue,
+      'company': company,
+      'type': type
+      },{observe:'response'})
+  }
+
+  getRating(email, type)
+  {
+    return this.http.get(this._url_rating, {
+      params: new HttpParams().set('email', email).set('type', type)
+    })
+  }
   getTag(){
     return this.http.get("http://localhost:5000/get_tags")
   }
