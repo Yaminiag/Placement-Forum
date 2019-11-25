@@ -1,0 +1,52 @@
+[
+    { 
+        "email" : "heron@gmail.com", 
+        "rating" : 4, 
+        "company" : "Morgan Stanley", 
+        "type" : "2m" 
+    },
+    { 
+        "email" : "heron@gmail.com", 
+        "rating" : 5, 
+        "company" : "Morgan Stanley", 
+        "type" : "ft" 
+    },
+    { 
+        "email" : "tamarin@gmail.com", 
+        "rating" : 4, 
+        "company" : "Goldman Sachs", 
+        "type" : "6m" 
+    },
+    { 
+        "email" : "tamarin@gmail.com", 
+        "rating" : 4, 
+        "company" : "Goldman Sachs", 
+        "type" : "2m" 
+    },
+    { 
+        "email" : "tamarin@gmail.com", 
+        "rating" : 4, 
+        "company" : "Goldman Sachs", 
+        "type" : "ft" 
+    },
+    { 
+        "email" : "avocet@gmail.com", 
+        "rating" : 4, 
+        "company" : "Intuit", 
+        "type" : "ft" 
+    },
+    { 
+        "email" : "avocet@gmail.com", 
+        "rating" : 5, 
+        "company" : "Intuit", 
+        "type" : "6m" 
+    },
+    { 
+        "email" : "avocet@gmail.com", 
+        "rating" : 3.5, 
+        "company" : "Intuit", 
+        "type" : "2m" 
+    }
+
+]
+

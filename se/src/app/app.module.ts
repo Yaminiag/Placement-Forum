@@ -12,6 +12,7 @@ import { StorageServiceModule } from 'angular-webstorage-service';
 import { FeedService } from './feed.service';
 import { KeyupDirective } from './keyup.directive';
 import { AnalyticsComponent } from './analytics/analytics.component';
+import { GraphComponent } from './graph/graph.component';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { AnalyticsComponent } from './analytics/analytics.component';
     AppComponent,
     RoutingComponents,
     KeyupDirective,
-    AnalyticsComponent
+    AnalyticsComponent,
+    GraphComponent
   ],
   imports: [
     BrowserModule,

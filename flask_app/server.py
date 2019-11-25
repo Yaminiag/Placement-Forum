@@ -413,7 +413,7 @@ def get_orgs():
             # print(data[i])
             for j in data[i]['tags']:
                 # print(j)
-                if j[1]=='ORG':
+                if j[1]=='ORG' and j[0] in ['Microsoft', 'Citrix', 'Goldman Sachs', 'Amazon', "SAP Lab's", 'Morgan Stanley', 'Intuit', 'Samsung']:
                     tags.append(j[0])
         print(tags)
         return jsonify(list(set(tags))),200
@@ -519,6 +519,43 @@ def rating():
             return jsonify({'rating': 0}), 200
     else:
         return jsonify({}), 405 
+
+@app.route('/calculate_rating', methods = ['GET'])
+def calculate_rating():
+    if request.method == 'GET':
+        table = mongo_db['rating']
+        arg = request.args.get('company')
+        data = table.find({'company':arg},{'_id':False})
+        data = convertCursor(data)
+        rates = 0
+        for i in range(0, len(data)):
+            rates+=data[i]['rating']
+        return jsonify(rates/len(data)), 200
+    else:
+        return jsonify({}), 405
+
+
+@app.route('/calculate_all_rating', methods = ['GET'])
+def calculate_all_rating():
+    if request.method == 'GET':
+        table = mongo_db['rating']
+        data = table.find({},{'_id':False})
+        data = convertCursor(data)
+        companies = []
+        for i in range(0, len(data)):
+            companies.append(data[i]['company'])
+        companies = list(set(companies))
+        ratings = dict()
+        for i in companies:
+            data = table.find({'company':i},{'_id':False})
+            data = convertCursor(data)
+            rates = 0
+            for j in range(0, len(data)):
+                rates+=data[j]['rating']
+            ratings[i] = rates/len(data)
+        return jsonify(ratings), 200
+    else:
+        return jsonify({}), 405
 
 
 if __name__ == "__main__":
