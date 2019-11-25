@@ -545,14 +545,27 @@ def calculate_all_rating():
         for i in range(0, len(data)):
             companies.append(data[i]['company'])
         companies = list(set(companies))
-        ratings = dict()
+        ratings = list()
+        #           { y: 71, label: "Apple" },
+        #   { y: 55, label: "Mango" },
+        #   { y: 50, label: "Orange" },
+        #   { y: 65, label: "Banana" },
+        #   { y: 95, label: "Pineapple" },
+        #   { y: 68, label: "Pears" },
+        #   { y: 28, label: "Grapes" },
+        #   { y: 34, label: "Lychee" },
+        #   { y: 14, label: "Jackfruit" }
+
         for i in companies:
+            x = dict()
+            x['label'] = i
             data = table.find({'company':i},{'_id':False})
             data = convertCursor(data)
             rates = 0
             for j in range(0, len(data)):
                 rates+=data[j]['rating']
-            ratings[i] = rates/len(data)
+            x['y'] = rates/len(data)
+            ratings.append(x)
         return jsonify(ratings), 200
     else:
         return jsonify({}), 405
