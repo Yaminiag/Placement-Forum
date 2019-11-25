@@ -24,14 +24,26 @@ export class GraphComponent implements OnInit {
       console.log(this.dataPoints)
       let chart = new CanvasJS.Chart("chartContainer", {
         animationEnabled: true,
-        exportEnabled: true,
+        // exportEnabled: true,
         title: {
-          text: "Basic Column Chart in Angular"
+          text: "Average rating of Companies"
+        },
+        width:500,
+        height:500,
+        axisX:{
+          drawBorder: true,
+          tickLength: 0,
+        },
+        axisY:{
+          drawBorder: true,
+          gridThickness: 0,
+
         },
         data: [{
           type: "column",
           dataPoints: this.dataPoints
         }]
+        
       });
         
       chart.render();    },
