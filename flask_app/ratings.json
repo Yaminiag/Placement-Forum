@@ -46,6 +46,54 @@
         "rating" : 3.5, 
         "company" : "Intuit", 
         "type" : "2m" 
+    },
+    { 
+        "email" : "heron@gmail.com", 
+        "rating" : 5, 
+        "company" : "Amazon", 
+        "type" : "ft" 
+    },
+    { 
+        "email" : "heron@gmail.com", 
+        "rating" : 3, 
+        "company" : "Amazon", 
+        "type" : "2m" 
+    },
+    { 
+        "email" : "heron@gmail.com", 
+        "rating" : 3, 
+        "company" : "Amazon", 
+        "type" : "6m" 
+    },
+    { 
+        "email" : "heron@gmail.com", 
+        "rating" : 4, 
+        "company" : "Amazon", 
+        "type" : "6m" 
+    },
+    { 
+        "email" : "heron@gmail.com", 
+        "rating" : 1, 
+        "company" : "SAP labs", 
+        "type" : "6m" 
+    },
+    { 
+        "email" : "heron@gmail.com", 
+        "rating" : 2, 
+        "company" : "SAP labs", 
+        "type" : "6m" 
+    },
+    { 
+        "email" : "heron@gmail.com", 
+        "rating" : 3, 
+        "company" : "SAP labs", 
+        "type" : "6m" 
+    },
+    { 
+        "email" : "heron@gmail.com", 
+        "rating" : 3, 
+        "company" : "SAP labs", 
+        "type" : "6m" 
     }
 
 ]
