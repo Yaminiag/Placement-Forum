@@ -213,6 +213,7 @@ def validated():
         val = table.find(user)
         val = convertCursor(val)
         year = val[0]['year']
+        year = str(year)
         if year in ['3', '4', '5']:
             return jsonify({'validated': True}),200
         else:
@@ -300,9 +301,9 @@ def answer():
 @app.route('/api/v1/answer/upvote',methods=['POST'])
 def upvote():
     if request.method == 'POST':
-        # getting timestamp to update the question's (last-modified) timestamp
-        now = datetime.now()
-        dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+        # # getting timestamp to update the question's (last-modified) timestamp
+        # now = datetime.now()
+        # dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
         # getting request data
         data = request.get_json()
         table = mongo_db['question']
@@ -323,10 +324,11 @@ def upvote():
             if existing_answers[i]['answer']==data['answer']:
                 found = True
                 if 'upvotes' in existing_answers[i]:
-                    upvoted_users = set(existing_answers[i]['upvotes'])
-                    upvoted_users.add(user)
-                    existing_answers[i]['upvotes'] = list(upvoted_users)
-                    existing_answers[i]['upvote_count'] += 1
+                    upvoted_users = existing_answers[i]['upvotes']
+                    if user not in upvoted_users:
+                        upvoted_users.append(user)
+                        existing_answers[i]['upvote_count'] += 1
+                    existing_answers[i]['upvotes'] = upvoted_users
                 else:
                     existing_answers[i]['upvotes'] = [user]
                     existing_answers[i]['upvote_count'] = 1
@@ -339,7 +341,7 @@ def upvote():
         existing_answers.sort(key = sortUpvotes, reverse = True)
 
         # updating question
-        newvalues = {'$set': {'answer': existing_answers, 'timestamp': dt_string}}
+        newvalues = {'$set': {'answer': existing_answers}}
         val = table.update_one(question, newvalues)
         if val:
             resp = {}

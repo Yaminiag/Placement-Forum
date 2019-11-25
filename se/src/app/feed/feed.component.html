@@ -14,8 +14,8 @@
         <div class="card-body">
             <dl *ngIf="feed.answer" class="row">
                 <ng-container *ngFor="let ans of feed.answer">
-                    <dt  *ngIf="user_email!=ans.email" (click)="upvote(feed.question,ans.answer)" class="col-1" id="upvote"><i class="fa fa-thumbs-o-up"></i></dt>
-                    <dt  *ngIf="user_email==ans.email" (click)="deleteAns(feed.question,ans.answer)" class="col-1" id="upvote"><i class="fa fa-trash"></i></dt>
+                    <dt  *ngIf="user_email!=ans.email" (click)="upvote(feed.question,ans.answer)" class="col-1" id="upvote"><p>{{ans.upvote_count}}  <span><i class="fa fa-thumbs-o-up"></i></span></p></dt>
+                    <dt  *ngIf="user_email==ans.email" (click)="deleteAns(feed.question,ans.answer)" class="col-1" id="upvote"><p>{{ans.upvote_count}}  <span><i class="fa fa-trash"></i></span></p></dt>
                     <dt class="col-2 text-muted">{{ans.email}}</dt>
                     <dd class="col-9">{{ans.answer}}</dd>
                 </ng-container>

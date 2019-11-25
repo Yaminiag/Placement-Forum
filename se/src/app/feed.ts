@@ -1,6 +1,7 @@
 export interface IAnswer{
     email : string,
-    answer : string
+    answer : string,
+    upvote_count : number
 }
 
 export interface IFeed {
