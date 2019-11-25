@@ -119,13 +119,14 @@ def register():
         cursor = table.find({'email':email})
         res = convertCursor(cursor)
         if(len(res)==0):
+            data['profile_photo'] = ''
             val = table.insert(data)
             if(val):
                 resp = {'message' : 'user registered successfully'}
                 resp = jsonify(resp)
                 return resp,200
             else:
-                resp = {'message' : 'user registeration failed'}
+                resp = {'message' : 'user registration failed'}
                 return jsonify(resp),400
         else:
             resp = {'message' : 'user exists'}
@@ -145,9 +146,12 @@ def user():
         val = table.find(user,{'_id':False})
         val = convertCursor(val)
         if(len(val)==1):
+            if 'profile_photo' not in val[0]:
+                val[0]['profile_photo']=''
             return jsonify(val),200
         return jsonify({}),400
-    return jsonify({}),405
+    else:
+        return jsonify({}),405
 
 @app.route('/api/v1/question',methods=['GET','POST','DELETE'])
 def question():
@@ -194,6 +198,7 @@ def validated():
         val = table.find(user)
         val = convertCursor(val)
         year = val[0]['year']
+        year = str(year)
         if year in ['3', '4', '5']:
             return jsonify({'validated': True}),200
         else:
@@ -363,6 +368,107 @@ def choice():
                 data=request.form.get('text')
                 print("data",data)
                 return jsonify(data)
+
+def countQuestions(email, table):
+    searchFor = {'ques_email': email}
+    val = table.find(searchFor)
+    val = convertCursor(val)
+    print(val)
+    print(len(val))
+    return len(val)
+
+def countAnswers(email, table):
+    val = table.find({})
+    val = convertCursor(val)
+    count = 0
+    for ques in val:
+        for answer in ques['answer']:
+            if answer['email'] == email:
+                print(answer)
+                count += 1
+    print(count)
+    return count
+
+def countUpvotes(email, table):
+    val = table.find({})
+    val = convertCursor(val)
+    count = 0
+    for ques in val:
+        for answer in ques['answer']:
+            print(answer)
+            if 'upvotes' in answer:
+                for up_email in answer['upvotes']:
+                    if up_email == email:
+                        count += 1
+    print(count)
+    return count
+
+@app.route('/api/v1/personal_stats', methods=['GET'])
+def personal_stats():
+    if request.method == 'GET':
+        email = request.args.get('email')
+        table = mongo_db['question']
+        qcount = countQuestions(email, table)
+        acount = countAnswers(email, table)
+        upcount = countUpvotes(email, table)
+        res = [qcount, acount, upcount]
+        print("hellooooo")
+        return jsonify(res), 200
+    else:
+        return jsonify({}),405
+
+@app.route('/api/v1/updateprofile', methods=['POST'])
+def updateprofile():
+    if request.method == 'POST':
+        # getting request data
+        data = request.get_json()
+        table = mongo_db['user']
+        searchFor = {'email': data['email']}
+        newvalues = {'$set': {}}
+        for key, value in data.items():
+            if key != 'email':
+                if value != '':
+                    newvalues['$set'][key] = value
+        print(newvalues)
+        val = table.update_one(searchFor, newvalues)
+        if val:
+            resp = {}
+            return jsonify(resp),200
+        else:
+            resp = {}
+            return jsonify({}),400
+    else:
+        return jsonify({}),405
+
+@app.route('/api/v1/rating', methods=['GET','POST'])
+def rating():
+    if request.method == 'POST':
+        # getting request data
+        data = request.get_json()
+        table = mongo_db['rating']
+        searchFor = {'email': data['email'], 'type': data['type']}
+        val = table.find(searchFor)
+        val = convertCursor(val)
+        if len(val):
+            newvalues = {'$set': {'rating': data['rating']}}
+            table.update_one(searchFor, newvalues)
+        else:
+            table.insert(data)
+        return jsonify({}),200
+
+    elif request.method == "GET":
+        email = request.args.get('email')
+        etype = request.args.get('type')
+        searchFor = {'email': email, 'type': etype}
+        table = mongo_db['rating']
+        val = table.find(searchFor)
+        val = convertCursor(val)
+        if len(val):
+            return jsonify({'rating': val[0]['rating']}), 200
+        else:
+            return jsonify({'rating': 0}), 200
+    else:
+        return jsonify({}), 405 
 
 
 
