@@ -88,10 +88,10 @@ def ner_many():
     return 
 
 def fetch(args):
-    print("args inside", args, len(args), type(args))
+    # print("args inside", args, len(args), type(args))
     data1 = list()
     data1.append(args) 
-    print(data1)
+    # print(data1)
     mycol = mongo_db["question"]
     cursor = mycol.find({'tags':{"$elemMatch":{"$elemMatch":{"$in":data1}}}},{'_id':False})
     data = convertCursor(cursor)
@@ -111,17 +111,17 @@ def login():
     if request.method=='POST':
         table = mongo_db['user']
         data = request.get_json()
-        print(data)
+        # print(data)
         cursor = table.find(data)
         res = convertCursor(cursor)
         if len(res)>0:
             resp = {'message' : 'Valid User'}
             resp = jsonify(resp)
-            print(resp)
+            # print(resp)
             return resp,200
         else:
             resp = {'message' : 'Invalid User'}
-            print(resp)
+            # print(resp)
             return jsonify(resp),400
     else:
         resp = {'message' : 'method not allowed'}
@@ -158,7 +158,7 @@ def user():
     if request.method == 'GET':
         data = request.args.get('email')
         user = {'email': data}
-        print(user)
+        # print(user)
         table = mongo_db['user']
         val = table.find(user,{'_id':False})
         val = convertCursor(val)
@@ -190,10 +190,10 @@ def question():
     elif request.method == 'DELETE':
         data = request.get_json()
         table = mongo_db['question']
-        print(data)
+        # print(data)
         val = table.find(data)
         val = convertCursor(val)
-        print(val)
+        # print(val)
         if len(val)>0:
             r = table.delete_many(data)
             resp = {}
@@ -208,7 +208,7 @@ def validated():
     if request.method == 'GET':
         data = request.args.get('email')
         user = {'email': data}
-        print(user)
+        # print(user)
         table = mongo_db['user']
         val = table.find(user)
         val = convertCursor(val)
@@ -240,7 +240,7 @@ def answer():
         val = convertCursor(val)
         try:
             val = val[0]
-            print(val)
+            # print(val)
         except IndexError:
             # question not found
             return jsonify({}),400
@@ -391,7 +391,7 @@ def callfetch():
                 args=request.args.get('key')
                 # print("args hello", args)
                 res = fetch(args)
-                print(res)
+                # print(res)
                 return jsonify(res)
 
 
@@ -399,7 +399,7 @@ def callfetch():
 def choice():
         if request.method=="POST":
                 data=request.form.get('text')
-                print("data",data)
+                # print("data",data)
                 return jsonify(data)
 
 @app.route('/get_orgs', methods=['GET', 'POST'])
@@ -415,7 +415,7 @@ def get_orgs():
                 # print(j)
                 if j[1]=='ORG' and j[0] in ['Microsoft', 'Citrix', 'Goldman Sachs', 'Amazon', "SAP Lab's", 'Morgan Stanley', 'Intuit', 'Samsung']:
                     tags.append(j[0])
-        print(tags)
+        # print(tags)
         return jsonify(list(set(tags))),200
     return jsonify({}),405
 
@@ -423,8 +423,8 @@ def countQuestions(email, table):
     searchFor = {'ques_email': email}
     val = table.find(searchFor)
     val = convertCursor(val)
-    print(val)
-    print(len(val))
+    # print(val)
+    # print(len(val))
     return len(val)
 
 def countAnswers(email, table):
@@ -434,9 +434,9 @@ def countAnswers(email, table):
     for ques in val:
         for answer in ques['answer']:
             if answer['email'] == email:
-                print(answer)
+                # print(answer)
                 count += 1
-    print(count)
+    # print(count)
     return count
 
 def countUpvotes(email, table):
@@ -445,12 +445,12 @@ def countUpvotes(email, table):
     count = 0
     for ques in val:
         for answer in ques['answer']:
-            print(answer)
+            # print(answer)
             if 'upvotes' in answer:
                 for up_email in answer['upvotes']:
                     if up_email == email:
                         count += 1
-    print(count)
+    # print(count)
     return count
 
 @app.route('/api/v1/personal_stats', methods=['GET'])
@@ -462,7 +462,7 @@ def personal_stats():
         acount = countAnswers(email, table)
         upcount = countUpvotes(email, table)
         res = [qcount, acount, upcount]
-        print("hellooooo")
+        # print("hellooooo")
         return jsonify(res), 200
     else:
         return jsonify({}),405
@@ -479,7 +479,7 @@ def updateprofile():
             if key != 'email':
                 if value != '':
                     newvalues['$set'][key] = value
-        print(newvalues)
+        # print(newvalues)
         val = table.update_one(searchFor, newvalues)
         if val:
             resp = {}
@@ -546,16 +546,6 @@ def calculate_all_rating():
             companies.append(data[i]['company'])
         companies = list(set(companies))
         ratings = list()
-        #           { y: 71, label: "Apple" },
-        #   { y: 55, label: "Mango" },
-        #   { y: 50, label: "Orange" },
-        #   { y: 65, label: "Banana" },
-        #   { y: 95, label: "Pineapple" },
-        #   { y: 68, label: "Pears" },
-        #   { y: 28, label: "Grapes" },
-        #   { y: 34, label: "Lychee" },
-        #   { y: 14, label: "Jackfruit" }
-
         for i in companies:
             x = dict()
             x['label'] = i
@@ -567,6 +557,54 @@ def calculate_all_rating():
             x['y'] = rates/len(data)
             ratings.append(x)
         return jsonify(ratings), 200
+    else:
+        return jsonify({}), 405
+
+@app.route('/get_percentage', methods = ['GET'])
+def get_percentage():
+    if request.method=='GET':
+        table = mongo_db['user']
+        data = table.find({}, {'_id':False})
+        data = convertCursor(data)
+        num = 0
+        others = 0
+        companies = []
+        for i in range(0, len(data)):
+            # print(data[i])
+            companies.append(data[i]['two_month_internship'])
+            companies.append(data[i]['six_month_internship'])
+            companies.append(data[i]['fulltime'])
+        companies = list(set(companies))
+        res = dict()
+        for i in range(0, len(companies)):
+            res[companies[i]] = 0
+        for i in range(0, len(data)):
+            if(data[i]['two_month_internship']==data[i]['six_month_internship']):
+                if(data[i]['two_month_internship']==data[i]['fulltime']):
+                    res[data[i]['two_month_internship']]+=1
+                else:
+                    res[data[i]['two_month_internship']]+=1
+                    res[data[i]['fulltime']]+=1
+            elif(data[i]['fulltime']==data[i]['six_month_internship']):
+                if(data[i]['two_month_internship']==data[i]['fulltime']):
+                    res[data[i]['two_month_internship']]+=1
+                else:
+                    res[data[i]['two_month_internship']]+=1
+                    res[data[i]['fulltime']]+=1
+            elif(data[i]['fulltime']==data[i]['two_month_internship']):
+                if(data[i]['six_month_internship']==data[i]['fulltime']):
+                    res[data[i]['two_month_internship']]+=1
+                else:
+                    res[data[i]['two_month_internship']]+=1
+                    res[data[i]['six_month_internship']]+=1
+        result=[]
+        for key, value in res.items():
+            if(key!=''):
+                x = dict()
+                x['name'] = key
+                x['y'] = value  
+                result.append(x) 
+        return jsonify(result), 200
     else:
         return jsonify({}), 405
 

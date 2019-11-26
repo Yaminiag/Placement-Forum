@@ -1,0 +1,10 @@
+.canvas-class
+{
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    /* max-width: 50%;
+    min-height: 50%; */
+    height: 500px;
+    width: 500px;
+}

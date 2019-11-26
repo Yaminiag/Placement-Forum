@@ -13,6 +13,8 @@ import { FeedService } from './feed.service';
 import { KeyupDirective } from './keyup.directive';
 import { AnalyticsComponent } from './analytics/analytics.component';
 import { GraphComponent } from './graph/graph.component';
+import { DoughnutComponent } from './doughnut/doughnut.component';
+import { ChartsModule } from 'ng2-charts';
 
 
 @NgModule({
@@ -21,7 +23,8 @@ import { GraphComponent } from './graph/graph.component';
     RoutingComponents,
     KeyupDirective,
     AnalyticsComponent,
-    GraphComponent
+    GraphComponent,
+    DoughnutComponent
   ],
   imports: [
     BrowserModule,
@@ -38,7 +41,8 @@ import { GraphComponent } from './graph/graph.component';
     HttpClientModule,
     StorageServiceModule,
     RatingModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    ChartsModule
   ],
   providers: [FeedService],
   bootstrap: [AppComponent]

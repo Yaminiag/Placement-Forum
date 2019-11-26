@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import * as CanvasJS from 'src/assets/canvasjs.min.js';
 import { HttpClient } from '@angular/common/http';
 import { GraphService } from '../graph.service';
+import { DoughnutService } from '../doughnut.service';
 
 //var CanvasJS = require('./canvasjs.min');
  
@@ -12,7 +13,12 @@ import { GraphService } from '../graph.service';
  
 export class GraphComponent implements OnInit {
   SERVER_URL: "http://localhost:5000/calculate_all_rating";
-  constructor(private httpClient: HttpClient, private Graph:GraphService) { }
+  public doughnutChartLabels:string[] = ['Intuit', 'Others'];
+  public demodoughnutChartData:any;
+  public doughnutChartType:string = 'doughnut';
+  public chartReady = false;
+  chartDoughnut: any;
+  constructor(private httpClient: HttpClient, private Graph:GraphService, private Doughnut:DoughnutService) { }
   public dataPoints
   ngOnInit() 
   {
@@ -46,10 +52,41 @@ export class GraphComponent implements OnInit {
         
       });
         
-      chart.render();    },
+      chart.render();  
+    
+    },
     //(err) => console.log(err);
-    );		
+    ),
+    
+    this.Doughnut.getData().subscribe((res)=>
+      {
+        console.log(res);
+        this.demodoughnutChartData = res;
+        this.chartReady = true;
+        this.chartDoughnut = new CanvasJS.Chart("ctx", {
+          animationEnabled: true,
+          // exportEnabled: true,
+          title: {
+            text: "Percentage of users in each company"
+          },
+          width:500,
+          height:500,
+          data:[{
+            type : "doughnut",
+            dataPoints:res
+          }],
+          options:{
+            legend:{
+              display:true
+            },
+          }
+          
+        });
+          
+        this.chartDoughnut.render();  
+    
+      });
+      
       
     }
-    
 }
